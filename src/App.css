@@ -16,7 +16,18 @@
   background-color: white;
   padding: 20px;
   border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-between;
 }
 .app_header_image {
   object-fit: contain;
+}
+
+.app_posts {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.app_posts_right {
+  margin-left: 20px;
 }

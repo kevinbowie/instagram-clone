@@ -23,3 +23,27 @@
   font-weight: normal;
   padding: 20px;
 }
+
+.post_comments {
+  padding: 20px;
+}
+.post_comment-box {
+  display: flex;
+  margin-top: 10px;
+}
+.post_comment-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-top: 1px solid lightgray;
+}
+.post_comment-button {
+  flex: 0;
+  border: none;
+  color: #6082a3;
+  background-color: transparent;
+  border-top: 1px solid lightgray;
+}
+.post_comment-button:hover {
+  cursor: pointer;
+}

@@ -1,8 +1,37 @@
 import { Avatar } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { db } from "./firebase";
 import "./Post.css";
 
-function Post({ username, caption, imageUrl }) {
+function Post({ postId, username, caption, imageUrl }) {
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    let unsubscribe;
+    if (postId) {
+      unsubscribe = db
+        .collection("posts")
+        .doc(postId)
+        .collection("comments")
+        .onSnapshot((snapshot) => {
+          setComments(snapshot.docs.map((doc) => doc.data()));
+        });
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [postId]);
+
+  const postComment = (event) => {
+    event.preventDefault();
+    db.collection("posts").doc(postId).collection("comments").add({
+      comment,
+      username,
+    });
+  };
+
   return (
     <div className="post">
       <div className="post_header">
@@ -18,6 +47,32 @@ function Post({ username, caption, imageUrl }) {
       <h4 className="post_text">
         <strong>{username}</strong> {caption}
       </h4>
+
+      <div className="post_comments">
+        {comments.map((comment) => (
+          <p>
+            <strong>{comment.username}</strong> {comment.comment}
+          </p>
+        ))}
+      </div>
+
+      <form className="post_comment-box">
+        <input
+          type="text"
+          className="post_comment-input"
+          placeholder="Add a comment..."
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
+        <button
+          className="post_comment-button"
+          disabled={!comment}
+          type="submit"
+          onClick={postComment}
+        >
+          Post
+        </button>
+      </form>
     </div>
   );
 }

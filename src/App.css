@@ -21,6 +21,23 @@
   display: flex;
   justify-content: space-between;
 }
+
+.app_header_left {
+  display: flex;
+  align-items: center;
+}
+.app_header_left .MuiSvgIcon-root {
+  margin-left: 20px;
+  padding: 3px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+.app_header_left .MuiSvgIcon-root:hover {
+  cursor: pointer;
+  background-color: #b1b1b1;
+  transition: background-color 0.2s ease-in;
+}
+
 .app_header_image {
   object-fit: contain;
 }

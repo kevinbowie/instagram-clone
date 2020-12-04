@@ -3,8 +3,12 @@ import "./App.css";
 import Post from "./Post";
 import { auth, db } from "./firebase";
 import { Button, Input, makeStyles, Modal } from "@material-ui/core";
+import MovieIcon from "@material-ui/icons/Movie";
+
 import ImageUpload from "./ImageUpload";
 import InstagramEmbed from "react-instagram-embed";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Reels from "./Reels";
 
 function getModalStyle() {
   const top = 50;
@@ -90,127 +94,142 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          <form action="" className="app_sign-up">
-            <center>
-              <img
-                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                alt=""
-                className="app_header_image"
-              />
-            </center>
-            <Input
-              placeholder="username"
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
+    <Router>
+      <Switch>
+        <Route path="/reels">
+          <Reels />
+        </Route>
+        <Route path="/">
+          <div className="app">
+            <Modal open={open} onClose={() => setOpen(false)}>
+              <div style={modalStyle} className={classes.paper}>
+                <form action="" className="app_sign-up">
+                  <center>
+                    <img
+                      src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                      alt=""
+                      className="app_header_image"
+                    />
+                  </center>
+                  <Input
+                    placeholder="username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
 
-            <Input
-              placeholder="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+                  <Input
+                    placeholder="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
 
-            <Input
-              placeholder="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button type="submit" onClick={signUp}>
-              Sign Up
-            </Button>
-          </form>
-        </div>
-      </Modal>
+                  <Input
+                    placeholder="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Button type="submit" onClick={signUp}>
+                    Sign Up
+                  </Button>
+                </form>
+              </div>
+            </Modal>
 
-      <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
-        <div style={modalStyle} className={classes.paper}>
-          <form action="" className="app_sign-up">
-            <center>
-              <img
-                src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-                alt=""
-                className="app_header_image"
-              />
-            </center>
-            <Input
-              placeholder="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Modal open={openSignIn} onClose={() => setOpenSignIn(false)}>
+              <div style={modalStyle} className={classes.paper}>
+                <form action="" className="app_sign-up">
+                  <center>
+                    <img
+                      src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                      alt=""
+                      className="app_header_image"
+                    />
+                  </center>
+                  <Input
+                    placeholder="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
 
-            <Input
-              placeholder="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button type="submit" onClick={signIn}>
-              Sign In
-            </Button>
-          </form>
-        </div>
-      </Modal>
+                  <Input
+                    placeholder="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <Button type="submit" onClick={signIn}>
+                    Sign In
+                  </Button>
+                </form>
+              </div>
+            </Modal>
 
-      <div className="app_header">
-        <img
-          src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
-          alt=""
-          className="app_header_image"
-        />
+            <div className="app_header">
+              <div className="app_header_left">
+                <img
+                  src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
+                  alt=""
+                  className="app_header_image"
+                />
 
-        {user ? (
-          <Button onClick={() => auth.signOut()}>Logout</Button>
-        ) : (
-          <div className="app_login-container">
-            <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
-            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+                <Link to="/reels">
+                  <MovieIcon />
+                </Link>
+              </div>
+
+              {user ? (
+                <Button onClick={() => auth.signOut()}>Logout</Button>
+              ) : (
+                <div className="app_login-container">
+                  <Button onClick={() => setOpenSignIn(true)}>Sign In</Button>
+                  <Button onClick={() => setOpen(true)}>Sign Up</Button>
+                </div>
+              )}
+            </div>
+
+            <div className="app_posts">
+              <div className="app_posts_left">
+                {posts.map(({ id, post }) => (
+                  <Post
+                    key={id}
+                    postId={id}
+                    user={user}
+                    username={post.username}
+                    caption={post.caption}
+                    imageUrl={post.imageUrl}
+                  />
+                ))}
+              </div>
+              <div className="app_posts_right">
+                <InstagramEmbed
+                  url="https://instagram.com/p/B_uf9dmAGPw/"
+                  clientAccessToken="539220176889232|bOW5B3AgrtJGCc8KtDbJkDotwy8"
+                  maxWidth={320}
+                  hideCaption={false}
+                  containerTagName="div"
+                  protocol=""
+                  injectScript
+                  onLoading={() => {}}
+                  onSuccess={() => {}}
+                  onAfterRender={() => {}}
+                  onFailure={() => {}}
+                />
+              </div>
+            </div>
+
+            {user?.displayName ? (
+              <ImageUpload username={user.displayName} />
+            ) : (
+              <h3>Sorry you need to login to upload</h3>
+            )}
           </div>
-        )}
-      </div>
-
-      <div className="app_posts">
-        <div className="app_posts_left">
-          {posts.map(({ id, post }) => (
-            <Post
-              key={id}
-              postId={id}
-              user={user}
-              username={post.username}
-              caption={post.caption}
-              imageUrl={post.imageUrl}
-            />
-          ))}
-        </div>
-        <div className="app_posts_right">
-          <InstagramEmbed
-            url="https://instagram.com/p/B_uf9dmAGPw/"
-            clientAccessToken="539220176889232|bOW5B3AgrtJGCc8KtDbJkDotwy8"
-            maxWidth={320}
-            hideCaption={false}
-            containerTagName="div"
-            protocol=""
-            injectScript
-            onLoading={() => {}}
-            onSuccess={() => {}}
-            onAfterRender={() => {}}
-            onFailure={() => {}}
-          />
-        </div>
-      </div>
-
-      {user?.displayName ? (
-        <ImageUpload username={user.displayName} />
-      ) : (
-        <h3>Sorry you need to login to upload</h3>
-      )}
-    </div>
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

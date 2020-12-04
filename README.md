@@ -1,3 +1,13 @@
+# Instagram Clone
+
+https://instagram-clone-0211.web.app/
+
+## Features
+
+- Authentication (Firebase)
+- Comments
+- Post
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
